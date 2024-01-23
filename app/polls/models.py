@@ -3,7 +3,7 @@ from django.db import models
 
 class Poll(models.Model):
     name = models.CharField(max_length=256)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)#unique=True verhindert, das es mehrere DB Felder mit dem selben Slug gibt.
 
     def __str__(self):
         return "{0} Slug: {1}".format(self.name, self.slug)

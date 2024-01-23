@@ -1,47 +1,21 @@
-<!doctype html>
-<html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style type="text/css">
-        div.weiterrunter {
-        margin-top: 20px;
-        }
-
-    </style>
-    <title>Umfrage HTML</title>
-</head>
-<body>
-    <div class="container weiterrunter">
-    <h1>Umfrageseite</h1>
-        <p class="lead">
-            Herzlich willkommen auf der Abstimmungsseite für meine Umfragen!
-        </p>
-        <hr/>
-        <h2>Aktuell laufende Umfragen</h2>
-    {% if umfragen %}
-    <ul>
-        {% for umfrage in umfragen %}
-        <li><a href="">{{ umfrage.name }}</a></li>
-
-        {% endfor %}
-    </ul>
-    {% endif %}
-    </div>
+{% extends 'polls/base.html' %}
+{% block content %}
+{% if umfrage %}
     <h1>{{ umfrage.name }}</h1>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+    <h2>Antwortmöglichkeiten</h2>
+    {% if umfrage.choice_set.all %}
+         <form action="{% url 'vote' umfrage.slug %}" method="post">
+             {% csrf_token %}
+             {% for choice in umfrage.choice_set.all %}
+             <input type="radio" name="choice" value="{{ choice.id }}"/>
+             <label>{{ choice.name }}</label>
+             {% endfor %}
+             <input type="submit" value="Antwort absenden"/>
+         </form>
+    {% else %}
+    <h1>Leider gibt es noch keine Antwortmöglichkeiten.</h1>
+    {% endif %}
+{% else %}
+<h1>Es konnte keine Umfrage ausgegeben werden.</h1>
+{% endif %}
+{% endblock %}

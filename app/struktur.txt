@@ -1,0 +1,5 @@
+- Nutzer öffnet Hauptseite          index           path('')
+- Nutzer wählt Abstimmung           umfrage_detail  path('poll/<str:slug>/')
+- Nutzer setzt Checkbox bei Wahl
+- Nutzer schickt Vormular ab        vote            path('poll/<str:slug>/vote/')
+- Nutzer sieht Bestätigung(votes)   umfrage_result  path('poll/<str:slug>/results/')
