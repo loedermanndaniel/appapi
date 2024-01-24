@@ -3,3 +3,19 @@
 - Nutzer setzt Checkbox bei Wahl
 - Nutzer schickt Vormular ab        vote            path('poll/<str:slug>/vote/')
 - Nutzer sieht Bestätigung(votes)   umfrage_result  path('poll/<str:slug>/results/')
+
+
+def vote(request, slug):
+        # bisheriger Quellcode
+
+        if 'voted_polls' in request.session:
+            if type(request.session['voted_polls']) == list:
+                voted_polls = request.session['voted_polls']
+                voted_polls.append(umfrage.id)
+                request.session['voted_polls'] = voted_polls
+            else:
+                request.session['voted_polls'] = [umfrage.id]
+        else:
+            request.session['voted_polls'] = [umfrage.id]
+
+        return HttpResponseRedirect(reverse('polls:results', args=(umfrage.slug,)))

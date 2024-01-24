@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.db import models
 
 
@@ -5,9 +7,18 @@ class Poll(models.Model):
     name = models.CharField(max_length=256)
     slug = models.SlugField(unique=True)#unique=True verhindert, das es mehrere DB Felder mit dem selben Slug gibt.
 
+    publish_time = models.DateTimeField()
+    days_running = models.IntegerField(default=7)
+
     def __str__(self):
         return "{0} Slug: {1}".format(self.name, self.slug)
 
+    def is_running(self):
+        end_time = self.publish_time + timedelta(days=self.days_running)
+        if timezone.now() >= self.publish_time and timezone.now() <= end_time:
+            return True
+        else:
+            return False
 
 class Choice(models.Model):
     poll = models.ForeignKey(to="Poll", on_delete=models.CASCADE)

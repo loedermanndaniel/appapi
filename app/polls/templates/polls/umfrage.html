@@ -1,20 +1,35 @@
 {% extends 'polls/base.html' %}
 {% block content %}
-{% if umfrage %}
-    <h1>{{ umfrage.name }}</h1>
+{% if object %}
+    <h1>{{ object.name }}</h1>
     <h2>Antwortmöglichkeiten</h2>
-    {% if umfrage.choice_set.all %}
-         <form action="{% url 'vote' umfrage.slug %}" method="post">
+{% for message in messages %}
+<div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endfor %}
+{% if not voted %}
+    {% if object.choice_set.all %}
+         <form action="{% url 'polls:vote' object.slug %}" method="post">
              {% csrf_token %}
-             {% for choice in umfrage.choice_set.all %}
+             {% for choice in object.choice_set.all %}
              <input type="radio" name="choice" value="{{ choice.id }}"/>
              <label>{{ choice.name }}</label>
              {% endfor %}
              <input type="submit" value="Antwort absenden"/>
          </form>
     {% else %}
-    <h1>Leider gibt es noch keine Antwortmöglichkeiten.</h1>
+    <h2>Leider gibt es noch keine Antwortmöglichkeiten.</h2>
     {% endif %}
+<h3><a href="{% url 'polls:index' %}">Zurück zur Startseite</a></h3>
+{% else %}
+<p>
+    Du hast bereits abgestimmt und kannst dir <a href="{% url 'polls:results' object.slug %}">hier</a> die Ergebnisse ansehen.
+</p>
+{% endif %}
+
 {% else %}
 <h1>Es konnte keine Umfrage ausgegeben werden.</h1>
 {% endif %}

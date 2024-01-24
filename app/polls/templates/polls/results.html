@@ -1,0 +1,28 @@
+{% extends 'polls/base.html' %}
+{% block content %}
+{% if object %}
+    <h1>{{ object.name }}</h1>
+    <h2>Ergebnis</h2>
+    <a href="{% url 'polls:index' %}">Zurück zur Startseite</a>
+    {% if access %}
+    <p class="lead">
+        Vielen Dank für die Abstimmung!
+    </p>
+    {% if object.choice_set.all %}
+    <ul>
+             {% for choice in object.choice_set.all %}
+                <li>{{ choice.name }}: {{ choice.votes }} haben dafür abgestimmt!</li>
+             {% endfor %}
+    </ul>
+    {% else %}
+    <p>Leider gibt es noch keine Antwortmöglichkeiten.</p>
+    {% endif %}
+
+    {% else %}
+    <h3>Fehler: Umfrageergebnisse sind nur mit Abstimmung einsehbar!</h3>
+    {% endif %}
+
+{% else %}
+<h1>Es konnte keine Umfrage ausgegeben werden.</h1>
+{% endif %}
+{% endblock %}
