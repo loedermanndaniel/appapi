@@ -6,12 +6,15 @@
 </p>
 <hr/>
 <h2>Aktuell laufende Umfragen</h2>
+<br>
 {% if umfragen %}
 <ul>
     {% for umfrage in umfragen %}
     <li><a href="{% url 'polls:umfrage-detail' umfrage.slug %}">{{ umfrage.name }}</a></li>
+    <br>
     {% endfor %}
 </ul>
+<br>
 {% if user.is_authenticated %}
 Hallo {{ user.username }}!
 {% endif %}

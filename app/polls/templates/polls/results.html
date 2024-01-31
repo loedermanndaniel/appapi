@@ -2,8 +2,10 @@
 {% block content %}
 {% if object %}
     <h1>{{ object.name }}</h1>
+<br>
     <h2>Ergebnis</h2>
-    <a href="{% url 'polls:index' %}">Zurück zur Startseite</a>
+<br>
+
     {% if access %}
     <p class="lead">
         Vielen Dank für die Abstimmung!
@@ -24,5 +26,7 @@
 
 {% else %}
 <h1>Es konnte keine Umfrage ausgegeben werden.</h1>
+
 {% endif %}
+<a href="{% url 'polls:index' %}">Zurück zur Startseite</a>
 {% endblock %}

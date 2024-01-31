@@ -2,7 +2,9 @@
 {% block content %}
 {% if object %}
     <h1>{{ object.name }}</h1>
-    <h2>Antwortmöglichkeiten</h2>
+<br>
+    <h3>Antwortmöglichkeiten:</h3>
+<br>
 {% for message in messages %}
 <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
     {{ message }}
@@ -16,13 +18,15 @@
              {% csrf_token %}
              {% for choice in object.choice_set.all %}
              <input type="radio" name="choice" value="{{ choice.id }}"/>
-             <label>{{ choice.name }}</label>
+             <label>{{ choice.name }} </label>
              {% endfor %}
+             <br><br>
              <input type="submit" value="Antwort absenden"/>
          </form>
     {% else %}
     <h2>Leider gibt es noch keine Antwortmöglichkeiten.</h2>
     {% endif %}
+<br><br>
 <h3><a href="{% url 'polls:index' %}">Zurück zur Startseite</a></h3>
 {% else %}
 <p>
