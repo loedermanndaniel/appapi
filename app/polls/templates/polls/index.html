@@ -12,5 +12,8 @@
     <li><a href="{% url 'polls:umfrage-detail' umfrage.slug %}">{{ umfrage.name }}</a></li>
     {% endfor %}
 </ul>
+{% if user.is_authenticated %}
+Hallo {{ user.username }}!
+{% endif %}
 {% endif %}
 {% endblock %}
